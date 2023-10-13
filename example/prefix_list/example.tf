@@ -34,6 +34,7 @@ module "security_group" {
   new_sg_ingress_rules_with_prefix_list = [{
     rule_count  = 1
     allow_port  = 22
+    to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh traffic."
     }

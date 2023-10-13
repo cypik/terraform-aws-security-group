@@ -31,14 +31,16 @@ module "security_group_rules" {
   ## INGRESS Rules
   existing_sg_ingress_rules_with_cidr_blocks = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.9.0.0/16"]
     description = "Allow ssh traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
       cidr_blocks = ["10.9.0.0/16"]
       description = "Allow Mongodb traffic."
@@ -48,14 +50,16 @@ module "security_group_rules" {
   ## EGRESS Rules
   existing_sg_egress_rules_with_cidr_blocks = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["10.9.0.0/16"]
     description = "Allow ssh outbound traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
       cidr_blocks = ["10.9.0.0/16"]
       description = "Allow Mongodb outbound traffic."

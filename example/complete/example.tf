@@ -29,14 +29,16 @@ module "security_group" {
   ## INGRESS Rules
   new_sg_ingress_rules_with_cidr_blocks = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["172.16.0.0/16"]
     description = "Allow ssh traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
       cidr_blocks = ["172.16.0.0/16"]
       description = "Allow Mongodb traffic."
@@ -45,13 +47,15 @@ module "security_group" {
 
   new_sg_ingress_rules_with_self = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 22
       protocol    = "tcp"
       description = "Allow Mongodb traffic."
     }
@@ -59,14 +63,16 @@ module "security_group" {
 
   new_sg_ingress_rules_with_source_sg_id = [{
     rule_count               = 1
-    allow_port               = 22
+    from_port                = 22
+    to_port                  = 22
     protocol                 = "tcp"
     source_security_group_id = "sg-03de2036c5096cb34"
     description              = "Allow ssh traffic."
     },
     {
       rule_count               = 2
-      allow_port               = 27017
+      from_port                = 27017
+      to_port                  = 27017
       protocol                 = "tcp"
       source_security_group_id = "sg-03de2036c5096cb34"
       description              = "Allow Mongodb traffic."
@@ -75,14 +81,16 @@ module "security_group" {
   ## EGRESS Rules
   new_sg_egress_rules_with_cidr_blocks = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     cidr_blocks = [module.vpc.vpc_cidr_block, "172.16.0.0/16"]
     description = "Allow ssh outbound traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
       cidr_blocks = ["172.16.0.0/16"]
       description = "Allow Mongodb outbound traffic."
@@ -91,27 +99,31 @@ module "security_group" {
 
   new_sg_egress_rules_with_self = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
+    to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh outbound traffic."
     },
     {
       rule_count  = 2
-      allow_port  = 27017
+      from_port   = 27017
+      to_port     = 27017
       protocol    = "tcp"
       description = "Allow Mongodb traffic."
   }]
 
   new_sg_egress_rules_with_source_sg_id = [{
     rule_count               = 1
-    allow_port               = 22
+    from_port                = 22
+    to_port                  = 22
     protocol                 = "tcp"
     source_security_group_id = "sg-03de2036c5096cb34"
     description              = "Allow ssh outbound traffic."
     },
     {
       rule_count               = 2
-      allow_port               = 27017
+      from_port                = 27017
+      to_port                  = 27017
       protocol                 = "tcp"
       source_security_group_id = "sg-03de2036c5096cb34"
       description              = "Allow Mongodb traffic."

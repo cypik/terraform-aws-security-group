@@ -55,9 +55,9 @@ resource "aws_ec2_managed_prefix_list" "prefix_list" {
 resource "aws_security_group_rule" "new_sg_ingress_with_cidr_blocks" {
   for_each          = var.enable ? { for rule in var.new_sg_ingress_rules_with_cidr_blocks : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   cidr_blocks       = lookup(each.value, "cidr_blocks", null)
   ipv6_cidr_blocks  = lookup(each.value, "ipv6_cidr_blocks", null)
@@ -68,9 +68,9 @@ resource "aws_security_group_rule" "new_sg_ingress_with_cidr_blocks" {
 resource "aws_security_group_rule" "new_sg_ingress_with_self" {
   for_each          = var.enable ? { for rule in var.new_sg_ingress_rules_with_self : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   self              = lookup(each.value, "self", true)
   description       = lookup(each.value, "description", null)
@@ -80,9 +80,9 @@ resource "aws_security_group_rule" "new_sg_ingress_with_self" {
 resource "aws_security_group_rule" "new_sg_ingress_with_source_sg_id" {
   for_each                 = var.enable ? { for rule in var.new_sg_ingress_rules_with_source_sg_id : rule.rule_count => rule } : {}
   type                     = "ingress"
-  from_port                = each.value.allow_port
+  from_port                = each.value.from_port
   protocol                 = each.value.protocol
-  to_port                  = each.value.allow_port
+  to_port                  = each.value.to_port
   source_security_group_id = each.value.source_security_group_id
   security_group_id        = join("", aws_security_group.default[*].id)
   description              = lookup(each.value, "description", null)
@@ -92,9 +92,9 @@ resource "aws_security_group_rule" "new_sg_ingress_with_source_sg_id" {
 resource "aws_security_group_rule" "new_sg_ingress_with_prefix_list" {
   for_each          = var.enable ? { for rule in var.new_sg_ingress_rules_with_prefix_list : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "description", null)
@@ -107,9 +107,9 @@ resource "aws_security_group_rule" "new_sg_ingress_with_prefix_list" {
 resource "aws_security_group_rule" "existing_sg_ingress_cidr_blocks" {
   for_each          = var.enable ? { for rule in var.existing_sg_ingress_rules_with_cidr_blocks : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   cidr_blocks       = lookup(each.value, "cidr_blocks", null)
   ipv6_cidr_blocks  = lookup(each.value, "ipv6_cidr_blocks", null)
@@ -120,9 +120,9 @@ resource "aws_security_group_rule" "existing_sg_ingress_cidr_blocks" {
 resource "aws_security_group_rule" "existing_sg_ingress_with_self" {
   for_each          = var.enable ? { for rule in var.existing_sg_ingress_rules_with_self : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   self              = lookup(each.value, "self", true)
   description       = lookup(each.value, "description", null)
@@ -132,9 +132,9 @@ resource "aws_security_group_rule" "existing_sg_ingress_with_self" {
 resource "aws_security_group_rule" "existing_sg_ingress_with_source_sg_id" {
   for_each                 = var.enable ? { for rule in var.existing_sg_ingress_rules_with_source_sg_id : rule.rule_count => rule } : {}
   type                     = "ingress"
-  from_port                = each.value.allow_port
+  from_port                = each.value.from_port
   protocol                 = try(each.value.protocol, "tcp")
-  to_port                  = each.value.allow_port
+  to_port                  = each.value.to_port
   source_security_group_id = each.value.source_security_group_id
   security_group_id        = join("", data.aws_security_group.existing[*].id)
   description              = try(each.value.description, "Allow ssh inbound traffic.")
@@ -144,9 +144,9 @@ resource "aws_security_group_rule" "existing_sg_ingress_with_source_sg_id" {
 resource "aws_security_group_rule" "existing_sg_ingress_with_prefix_list" {
   for_each          = var.enable ? { for rule in var.existing_sg_ingress_rules_with_prefix_list : rule.rule_count => rule } : {}
   type              = "ingress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
   description       = try(each.value.description, "Allow ssh inbound traffic.")
@@ -159,9 +159,9 @@ resource "aws_security_group_rule" "existing_sg_ingress_with_prefix_list" {
 resource "aws_security_group_rule" "new_sg_egress_with_cidr_blocks" {
   for_each          = var.enable ? { for rule in var.new_sg_egress_rules_with_cidr_blocks : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   cidr_blocks       = lookup(each.value, "cidr_blocks", null)
   ipv6_cidr_blocks  = lookup(each.value, "ipv6_cidr_blocks", null)
@@ -172,9 +172,9 @@ resource "aws_security_group_rule" "new_sg_egress_with_cidr_blocks" {
 resource "aws_security_group_rule" "new_sg_egress_with_self" {
   for_each          = var.enable ? { for rule in var.new_sg_egress_rules_with_self : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   self              = lookup(each.value, "self", true)
   description       = lookup(each.value, "description", null)
@@ -184,9 +184,9 @@ resource "aws_security_group_rule" "new_sg_egress_with_self" {
 resource "aws_security_group_rule" "new_sg_egress_with_source_sg_id" {
   for_each                 = var.enable ? { for rule in var.new_sg_egress_rules_with_source_sg_id : rule.rule_count => rule } : {}
   type                     = "egress"
-  from_port                = each.value.allow_port
+  from_port                = each.value.from_port
   protocol                 = try(each.value.protocol, "tcp")
-  to_port                  = each.value.allow_port
+  to_port                  = each.value.to_port
   source_security_group_id = each.value.source_security_group_id
   security_group_id        = join("", aws_security_group.default[*].id)
   description              = lookup(each.value, "description", null)
@@ -196,9 +196,9 @@ resource "aws_security_group_rule" "new_sg_egress_with_source_sg_id" {
 resource "aws_security_group_rule" "new_sg_egress_with_prefix_list" {
   for_each          = var.enable ? { for rule in var.new_sg_egress_rules_with_prefix_list : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
   prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "description", null)
@@ -211,9 +211,9 @@ resource "aws_security_group_rule" "new_sg_egress_with_prefix_list" {
 resource "aws_security_group_rule" "existing_sg_egress_with_cidr_blocks" {
   for_each          = var.enable ? { for rule in var.existing_sg_egress_rules_with_cidr_blocks : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   cidr_blocks       = lookup(each.value, "cidr_blocks", null)
   ipv6_cidr_blocks  = lookup(each.value, "ipv6_cidr_blocks", null)
@@ -224,9 +224,9 @@ resource "aws_security_group_rule" "existing_sg_egress_with_cidr_blocks" {
 resource "aws_security_group_rule" "existing_sg_egress_with_self" {
   for_each          = var.enable ? { for rule in var.existing_sg_egress_rules_with_self : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = each.value.protocol
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   self              = lookup(each.value, "self", true)
   description       = lookup(each.value, "description", null)
@@ -236,9 +236,9 @@ resource "aws_security_group_rule" "existing_sg_egress_with_self" {
 resource "aws_security_group_rule" "existing_sg_egress_with_source_sg_id" {
   for_each                 = var.enable ? { for rule in var.existing_sg_egress_rules_with_source_sg_id : rule.rule_count => rule } : {}
   type                     = "egress"
-  from_port                = each.value.allow_port
+  from_port                = each.value.from_port
   protocol                 = try(each.value.protocol, "tcp")
-  to_port                  = each.value.allow_port
+  to_port                  = each.value.to_port
   source_security_group_id = each.value.source_security_group_id
   security_group_id        = join("", data.aws_security_group.existing[*].id)
   description              = lookup(each.value, "source_address_prefix", null)
@@ -248,9 +248,9 @@ resource "aws_security_group_rule" "existing_sg_egress_with_source_sg_id" {
 resource "aws_security_group_rule" "existing_sg_egress_with_prefix_list" {
   for_each          = var.enable ? { for rule in var.existing_sg_egress_rules_with_prefix_list : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port         = each.value.allow_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
-  to_port           = each.value.allow_port
+  to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
   prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "source_address_prefix", null)
