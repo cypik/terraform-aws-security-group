@@ -17,7 +17,7 @@ To use this module, you can include it in your Terraform configuration. Here's a
 
 ```hcl
 module "security_group" {
-  source      = "./../.././"
+  source      = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -67,7 +67,7 @@ module "security_group" {
 - # Complete
 ```hcl
 module "security_group" {
-  source      = "./../../"
+  source      = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -181,7 +181,7 @@ module "security_group" {
 
 ```hcl
 module "security_group_rules" {
-  source         = "./../../."
+  source         = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
   name           = local.name
   environment    = local.environment
   vpc_id         = module.vpc.vpc_id
@@ -231,7 +231,7 @@ module "security_group_rules" {
 
 ```hcl
 module "security_group" {
-  source              = "./../.././"
+  source              = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
   name                = local.name
   environment         = local.environment
   vpc_id              = module.vpc.vpc_id
