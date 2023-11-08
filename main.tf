@@ -1,5 +1,5 @@
 module "labels" {
-  source      = "git::git@github.com:opz0/terraform-aws-labels.git?ref=master"
+  source      = "git::https://github.com/opz0/terraform-aws-labels.git?ref=v1.0.0"
   name        = var.name
   environment = var.environment
   managedby   = var.managedby
@@ -7,8 +7,8 @@ module "labels" {
   repository  = var.repository
 }
 
-##----------------------------------------------------------------------------- 
-## Below resource will deploy new security group in aws.    
+##-----------------------------------------------------------------------------
+## Below resource will deploy new security group in aws.
 ##-----------------------------------------------------------------------------
 resource "aws_security_group" "default" {
   count       = var.enable && var.new_sg ? 1 : 0
@@ -21,8 +21,8 @@ resource "aws_security_group" "default" {
   }
 }
 
-##----------------------------------------------------------------------------- 
-## Below data resource is to get details of existing security group in your aws environment. 
+##-----------------------------------------------------------------------------
+## Below data resource is to get details of existing security group in your aws environment.
 ##-----------------------------------------------------------------------------
 data "aws_security_group" "existing" {
   count  = var.enable && var.existing_sg_id != null ? 1 : 0
@@ -30,8 +30,8 @@ data "aws_security_group" "existing" {
   vpc_id = var.vpc_id
 }
 
-##----------------------------------------------------------------------------- 
-## Below resource will deploy prefix list resource in aws.  
+##-----------------------------------------------------------------------------
+## Below resource will deploy prefix list resource in aws.
 ##-----------------------------------------------------------------------------
 resource "aws_ec2_managed_prefix_list" "prefix_list" {
   count          = var.enable && var.prefix_list_enabled && length(var.prefix_list_ids) < 1 ? 1 : 0
@@ -49,7 +49,7 @@ resource "aws_ec2_managed_prefix_list" "prefix_list" {
 }
 
 ##-----------------------------------------------------------------------------
-## Below resource will deploy ingress security group rules for new security group created from this module. 
+## Below resource will deploy ingress security group rules for new security group created from this module.
 ##-----------------------------------------------------------------------------
 # Security group rules with "cidr_blocks", but without "source_security_id" and "self"
 resource "aws_security_group_rule" "new_sg_ingress_with_cidr_blocks" {
@@ -96,12 +96,12 @@ resource "aws_security_group_rule" "new_sg_ingress_with_prefix_list" {
   protocol          = each.value.protocol
   to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
-  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
+  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list[*].id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "description", null)
 }
 
-##----------------------------------------------------------------------------- 
-## Below resource will deploy ingress security group rules for existing security group.  
+##-----------------------------------------------------------------------------
+## Below resource will deploy ingress security group rules for existing security group.
 ##-----------------------------------------------------------------------------
 # Security group rules with "cidr_blocks", but without "source_security_id" and "self"
 resource "aws_security_group_rule" "existing_sg_ingress_cidr_blocks" {
@@ -148,12 +148,12 @@ resource "aws_security_group_rule" "existing_sg_ingress_with_prefix_list" {
   protocol          = try(each.value.protocol, "tcp")
   to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
-  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
+  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list[*].id : lookup(each.value, "prefix_list_ids", null)
   description       = try(each.value.description, "Allow ssh inbound traffic.")
 }
 
-##----------------------------------------------------------------------------- 
-## Below resource will deploy egress security group rules for new security group created from this module. 
+##-----------------------------------------------------------------------------
+## Below resource will deploy egress security group rules for new security group created from this module.
 ##-----------------------------------------------------------------------------
 # Security group rules with "cidr_blocks", but without "source_security_id" and "self"
 resource "aws_security_group_rule" "new_sg_egress_with_cidr_blocks" {
@@ -200,12 +200,12 @@ resource "aws_security_group_rule" "new_sg_egress_with_prefix_list" {
   protocol          = try(each.value.protocol, "tcp")
   to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
-  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
+  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list[*].id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "description", null)
 }
 
-##----------------------------------------------------------------------------- 
-## Below resource will deploy egress security group rules for existing security group.  
+##-----------------------------------------------------------------------------
+## Below resource will deploy egress security group rules for existing security group.
 ##-----------------------------------------------------------------------------
 # Security group rules with "cidr_blocks", but without "source_security_id" and "self"
 resource "aws_security_group_rule" "existing_sg_egress_with_cidr_blocks" {
@@ -252,6 +252,6 @@ resource "aws_security_group_rule" "existing_sg_egress_with_prefix_list" {
   protocol          = try(each.value.protocol, "tcp")
   to_port           = each.value.to_port
   security_group_id = join("", data.aws_security_group.existing[*].id)
-  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list.*.id : lookup(each.value, "prefix_list_ids", null)
+  prefix_list_ids   = lookup(each.value, "prefix_list_ids", null) == null ? aws_ec2_managed_prefix_list.prefix_list[*].id : lookup(each.value, "prefix_list_ids", null)
   description       = lookup(each.value, "source_address_prefix", null)
 }
