@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 locals {
-  name        = "app"
+  name        = "app11"
   environment = "test"
 }
 
@@ -11,8 +11,8 @@ locals {
 ## VPC Module Call.
 ##-----------------------------------------------------------------------------
 module "vpc" {
-  source      = "git::git@github.com:opz0/terraform-aws-vpc.git?ref=master"
-  name        = "app"
+  source      = "git::git@github.com:opz0/terraform-aws-vpc.git?ref=v1.0.0"
+  name        = "appdd"
   environment = "test"
   cidr_block  = "10.0.0.0/16"
 }
@@ -24,7 +24,7 @@ module "security_group" {
   source      = "./../../"
   name        = local.name
   environment = local.environment
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = module.vpc.id
 
   ## INGRESS Rules
   new_sg_ingress_rules_with_cidr_blocks = [{
@@ -54,10 +54,10 @@ module "security_group" {
     },
     {
       rule_count  = 2
-      from_port   = 27017
-      to_port     = 22
+      from_port   = 443
+      to_port     = 443
       protocol    = "tcp"
-      description = "Allow Mongodb traffic."
+      description = "Allow Mongodbn traffic."
     }
   ]
 
@@ -66,7 +66,7 @@ module "security_group" {
     from_port                = 22
     to_port                  = 22
     protocol                 = "tcp"
-    source_security_group_id = "sg-03de2036c5096cb34"
+    source_security_group_id = "sg-0f251332b1474ba77"
     description              = "Allow ssh traffic."
     },
     {
@@ -74,7 +74,7 @@ module "security_group" {
       from_port                = 27017
       to_port                  = 27017
       protocol                 = "tcp"
-      source_security_group_id = "sg-03de2036c5096cb34"
+      source_security_group_id = "sg-0f251332b1474ba77"
       description              = "Allow Mongodb traffic."
   }]
 
@@ -117,7 +117,7 @@ module "security_group" {
     from_port                = 22
     to_port                  = 22
     protocol                 = "tcp"
-    source_security_group_id = "sg-03de2036c5096cb34"
+    source_security_group_id = "sg-0f251332b1474ba77"
     description              = "Allow ssh outbound traffic."
     },
     {
@@ -125,7 +125,7 @@ module "security_group" {
       from_port                = 27017
       to_port                  = 27017
       protocol                 = "tcp"
-      source_security_group_id = "sg-03de2036c5096cb34"
+      source_security_group_id = "sg-0f251332b1474ba77"
       description              = "Allow Mongodb traffic."
   }]
 }

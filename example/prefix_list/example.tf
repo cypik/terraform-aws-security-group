@@ -3,28 +3,28 @@ provider "aws" {
 }
 
 locals {
-  name        = "app"
+  name        = "app2"
   environment = "test"
 }
 
-##----------------------------------------------------------------------------- 
-## VPC Module Call. 
+##-----------------------------------------------------------------------------
+## VPC Module Call.
 ##-----------------------------------------------------------------------------
 module "vpc" {
-  source      = "git::git@github.com:opz0/terraform-aws-vpc.git?ref=master"
+  source      = "git::git@github.com:opz0/terraform-aws-vpc.git?ref=v1.0.0"
   name        = local.name
   environment = local.environment
   cidr_block  = "10.0.0.0/16"
 }
 
-##----------------------------------------------------------------------------- 
-## Security Group Module Call. 
+##-----------------------------------------------------------------------------
+## Security Group Module Call.
 ##-----------------------------------------------------------------------------
 module "security_group" {
   source              = "./../.././"
   name                = local.name
   environment         = local.environment
-  vpc_id              = module.vpc.vpc_id
+  vpc_id              = module.vpc.id
   prefix_list_enabled = true
   entry = [{
     cidr = "10.19.0.0/16"
@@ -33,7 +33,7 @@ module "security_group" {
   ## INGRESS Rules
   new_sg_ingress_rules_with_prefix_list = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh traffic."
@@ -43,7 +43,8 @@ module "security_group" {
   ## EGRESS Rules
   new_sg_egress_rules_with_prefix_list = [{
     rule_count  = 1
-    allow_port  = 3306
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     description = "Allow mysql/aurora outbound traffic."
     }

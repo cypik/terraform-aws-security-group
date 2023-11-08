@@ -1,5 +1,7 @@
 # Terraform-aws-security-group
 
+# AWS Infrastructure Provisioning with Terraform
+
 ## Table of Contents
 - [Introduction](#introduction)
 - [Usage](#usage)
@@ -13,7 +15,9 @@ This module is designed to create an AWS Virtual Private Cloud (VPC) and associa
 ## Usage
 To use this module, you can include it in your Terraform configuration. Here's an example of how to use it:
 
-- # Basic
+## Examples
+
+## Example: Basic
 
 ```hcl
 module "security_group" {
@@ -64,7 +68,7 @@ module "security_group" {
 }
 ```
 
-- # Complete
+## Example: Complete
 ```hcl
 module "security_group" {
   source      = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
@@ -177,7 +181,7 @@ module "security_group" {
 }
 ```
 
-- # Only_rules
+## Example: Only_rules
 
 ```hcl
 module "security_group_rules" {
@@ -227,7 +231,7 @@ module "security_group_rules" {
 }
 ```
 
-- # Prefix_list
+## Example: Prefix_list
 
 ```hcl
 module "security_group" {
