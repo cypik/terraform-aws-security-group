@@ -21,7 +21,7 @@ To use this module, you can include it in your Terraform configuration. Here's a
 
 ```hcl
 module "security_group" {
-  source      = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
+  source      = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -71,7 +71,7 @@ module "security_group" {
 ## Example: Complete
 ```hcl
 module "security_group" {
-  source      = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
+  source      = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -185,7 +185,7 @@ module "security_group" {
 
 ```hcl
 module "security_group_rules" {
-  source         = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
+  source         = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
   name           = local.name
   environment    = local.environment
   vpc_id         = module.vpc.vpc_id
@@ -235,7 +235,7 @@ module "security_group_rules" {
 
 ```hcl
 module "security_group" {
-  source              = "git::https://github.com/opz0/terraform-aws-security-group.git?ref=v1.0.0"
+  source              = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
   name                = local.name
   environment         = local.environment
   vpc_id              = module.vpc.vpc_id
@@ -282,10 +282,10 @@ You can define the rules for SSH and MongoDB traffic as shown in the example.
 - Other relevant security group outputs (modify as needed).
 
 ## Examples
-For detailed examples on how to use this module, please refer to the 'examples' directory within this repository.
+For detailed examples on how to use this module, please refer to the [Examples](https://github.com/cypik/terraform-aws-security-group/tree/master/example) directory within this repository.
 
 ## Author
 Your Name Replace '[License Name]' and '[Your Name]' with the appropriate license and your information. Feel free to expand this README with additional details or usage instructions as needed for your specific use case.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/opz0/terraform-aws-security-group/blob/master/LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/cypik/terraform-aws-security-group/blob/master/LICENSE) file for details.
