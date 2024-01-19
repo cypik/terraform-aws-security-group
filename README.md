@@ -1,17 +1,18 @@
 # Terraform-aws-security-group
 
-# AWS Infrastructure Provisioning with Terraform
+# Terraform AWS Cloud SECURITY-GROUP Module
 
 ## Table of Contents
 - [Introduction](#introduction)
 - [Usage](#usage)
-- [Module Inputs](#module-inputs)
-- [Module Outputs](#module-outputs)
+- [Examples](#Examples)
+- [Author](#Author)
 - [License](#license)
+- [Inputs](#inputs)
+- [Outputs](#outputs)
 
 ## Introduction
-This module is designed to create an AWS Virtual Private Cloud (VPC) and associated security groups using Terraform. It allows you to easily define and provision a VPC and its associated security groups with specific ingress and egress rules.
-
+This Terraform module creates an AWS security-group along with additional configuration options.
 ## Usage
 To use this module, you can include it in your Terraform configuration. Here's an example of how to use it:
 
@@ -21,7 +22,8 @@ To use this module, you can include it in your Terraform configuration. Here's a
 
 ```hcl
 module "security_group" {
-  source      = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
+  source      = "cypik/security-group/aws"
+  version     = "1.0.1"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -71,7 +73,8 @@ module "security_group" {
 ## Example: Complete
 ```hcl
 module "security_group" {
-  source      = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
+  source      = "cypik/security-group/aws"
+  version     = "1.0.1"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -185,7 +188,8 @@ module "security_group" {
 
 ```hcl
 module "security_group_rules" {
-  source         = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
+  source         = "cypik/security-group/aws"
+  version        = "1.0.1"
   name           = local.name
   environment    = local.environment
   vpc_id         = module.vpc.vpc_id
@@ -235,7 +239,8 @@ module "security_group_rules" {
 
 ```hcl
 module "security_group" {
-  source              = "git::https://github.com/cypik/terraform-aws-security-group.git?ref=v1.0.0"
+  source              = "cypik/security-group/aws"
+  version             = "1.0.1"
   name                = local.name
   environment         = local.environment
   vpc_id              = module.vpc.vpc_id
@@ -263,29 +268,101 @@ module "security_group" {
 }
 ```
 
-## Module Inputs
-- `name`: A name for your application.
-- `environment`: The environment for your application.
-- `cidr_block`: The IP range for your VPC.
-- `vpc_id`: The ID of the VPC created by the VPC module.
-For security group settings, you can configure the ingress and egress rules using variables like:
-- `new_sg_ingress_rules_with_cidr_blocks`.
-- `new_sg_ingress_rules_with_self`.
-- `new_sg_ingress_rules_with_source_sg_id`.
-- `new_sg_egress_rules_with_cidr_blocks`.
-- `new_sg_egress_rules_with_self`.
-- `new_sg_egress_rules_with_source_sg_id`.
-You can define the rules for SSH and MongoDB traffic as shown in the example.
-## Module Outputs
-- `vpc_id` (string): The ID of the VPC created.
-- `security_group_id`: The ID of the created security group.
-- Other relevant security group outputs (modify as needed).
-
 ## Examples
 For detailed examples on how to use this module, please refer to the [Examples](https://github.com/cypik/terraform-aws-security-group/tree/master/example) directory within this repository.
 
 ## Author
-Your Name Replace '[License Name]' and '[Your Name]' with the appropriate license and your information. Feel free to expand this README with additional details or usage instructions as needed for your specific use case.
+Your Name Replace **MIT** and **Cypik** with the appropriate license and your information. Feel free to expand this README with additional details or usage instructions as needed for your specific use case.
 
 ## License
-This project is licensed under the MIT License - see the [LICENSE](https://github.com/cypik/terraform-aws-security-group/blob/master/LICENSE) file for details.
+This project is licensed under the **MIT** License - see the [LICENSE](https://github.com/cypik/terraform-aws-security-group/blob/master/LICENSE) file for details.
+
+<!-- BEGIN_TF_DOCS -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.6.6 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.32.1 |
+
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.32.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_labels"></a> [labels](#module\_labels) | cypik/labels/aws | 1.0.1 |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_ec2_managed_prefix_list.prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ec2_managed_prefix_list) | resource |
+| [aws_security_group.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
+| [aws_security_group_rule.existing_sg_egress_with_cidr_blocks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_egress_with_prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_egress_with_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_egress_with_source_sg_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_ingress_cidr_blocks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_ingress_with_prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_ingress_with_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.existing_sg_ingress_with_source_sg_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_egress_with_cidr_blocks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_egress_with_prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_egress_with_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_egress_with_source_sg_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_ingress_with_cidr_blocks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_ingress_with_prefix_list](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_ingress_with_self](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group_rule.new_sg_ingress_with_source_sg_id](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
+| [aws_security_group.existing](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/security_group) | data source |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_enable"></a> [enable](#input\_enable) | Flag to control module creation. | `bool` | `true` | no |
+| <a name="input_entry"></a> [entry](#input\_entry) | Can be specified multiple times for each prefix list entry. | `list(any)` | `[]` | no |
+| <a name="input_environment"></a> [environment](#input\_environment) | Environment (e.g. `prod`, `dev`, `staging`). | `string` | `""` | no |
+| <a name="input_existing_sg_egress_rules_with_cidr_blocks"></a> [existing\_sg\_egress\_rules\_with\_cidr\_blocks](#input\_existing\_sg\_egress\_rules\_with\_cidr\_blocks) | Ingress rules with only cidr block. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_existing_sg_egress_rules_with_prefix_list"></a> [existing\_sg\_egress\_rules\_with\_prefix\_list](#input\_existing\_sg\_egress\_rules\_with\_prefix\_list) | Egress rules with only prefic ist ids. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_existing_sg_egress_rules_with_self"></a> [existing\_sg\_egress\_rules\_with\_self](#input\_existing\_sg\_egress\_rules\_with\_self) | Egress rules with only self. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_existing_sg_egress_rules_with_source_sg_id"></a> [existing\_sg\_egress\_rules\_with\_source\_sg\_id](#input\_existing\_sg\_egress\_rules\_with\_source\_sg\_id) | Egress rules with only source security group id. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_existing_sg_id"></a> [existing\_sg\_id](#input\_existing\_sg\_id) | Provide existing security group id for updating existing rule | `string` | `null` | no |
+| <a name="input_existing_sg_ingress_rules_with_cidr_blocks"></a> [existing\_sg\_ingress\_rules\_with\_cidr\_blocks](#input\_existing\_sg\_ingress\_rules\_with\_cidr\_blocks) | Ingress rules with only cidr blocks. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_existing_sg_ingress_rules_with_prefix_list"></a> [existing\_sg\_ingress\_rules\_with\_prefix\_list](#input\_existing\_sg\_ingress\_rules\_with\_prefix\_list) | Ingress rules with only prefix\_list. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_existing_sg_ingress_rules_with_self"></a> [existing\_sg\_ingress\_rules\_with\_self](#input\_existing\_sg\_ingress\_rules\_with\_self) | Ingress rules with only source security group id. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_existing_sg_ingress_rules_with_source_sg_id"></a> [existing\_sg\_ingress\_rules\_with\_source\_sg\_id](#input\_existing\_sg\_ingress\_rules\_with\_source\_sg\_id) | Ingress rules with only prefix list ids. Should be used when there is existing security group. | `any` | `{}` | no |
+| <a name="input_label_order"></a> [label\_order](#input\_label\_order) | Label order, e.g. `name`,`application`. | `list(any)` | <pre>[<br>  "name",<br>  "environment"<br>]</pre> | no |
+| <a name="input_managedby"></a> [managedby](#input\_managedby) | ManagedBy, eg 'cypik'. | `string` | `"cypik"` | no |
+| <a name="input_max_entries"></a> [max\_entries](#input\_max\_entries) | The maximum number of entries that this prefix list can contain. | `number` | `5` | no |
+| <a name="input_name"></a> [name](#input\_name) | Name  (e.g. `app` or `cluster`). | `string` | `""` | no |
+| <a name="input_new_sg"></a> [new\_sg](#input\_new\_sg) | Flag to control creation of new security group. | `bool` | `true` | no |
+| <a name="input_new_sg_egress_rules_with_cidr_blocks"></a> [new\_sg\_egress\_rules\_with\_cidr\_blocks](#input\_new\_sg\_egress\_rules\_with\_cidr\_blocks) | Egress rules with only cidr\_blockd. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_egress_rules_with_prefix_list"></a> [new\_sg\_egress\_rules\_with\_prefix\_list](#input\_new\_sg\_egress\_rules\_with\_prefix\_list) | Egress rules with only prefix list ids. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_egress_rules_with_self"></a> [new\_sg\_egress\_rules\_with\_self](#input\_new\_sg\_egress\_rules\_with\_self) | Egress rules with only self. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_egress_rules_with_source_sg_id"></a> [new\_sg\_egress\_rules\_with\_source\_sg\_id](#input\_new\_sg\_egress\_rules\_with\_source\_sg\_id) | Egress rules with only source security group id. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_ingress_rules_with_cidr_blocks"></a> [new\_sg\_ingress\_rules\_with\_cidr\_blocks](#input\_new\_sg\_ingress\_rules\_with\_cidr\_blocks) | Ingress rules with only cidr blocks. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_ingress_rules_with_prefix_list"></a> [new\_sg\_ingress\_rules\_with\_prefix\_list](#input\_new\_sg\_ingress\_rules\_with\_prefix\_list) | Ingress rules with only prefix list ids. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_ingress_rules_with_self"></a> [new\_sg\_ingress\_rules\_with\_self](#input\_new\_sg\_ingress\_rules\_with\_self) | Ingress rules with only self. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_new_sg_ingress_rules_with_source_sg_id"></a> [new\_sg\_ingress\_rules\_with\_source\_sg\_id](#input\_new\_sg\_ingress\_rules\_with\_source\_sg\_id) | Ingress rules with only source security group id. Should be used when new security group is been deployed. | `any` | `{}` | no |
+| <a name="input_prefix_list_address_family"></a> [prefix\_list\_address\_family](#input\_prefix\_list\_address\_family) | (Required, Forces new resource) The address family (IPv4 or IPv6) of prefix list. | `string` | `"IPv4"` | no |
+| <a name="input_prefix_list_enabled"></a> [prefix\_list\_enabled](#input\_prefix\_list\_enabled) | Enable prefix\_list. | `bool` | `false` | no |
+| <a name="input_prefix_list_ids"></a> [prefix\_list\_ids](#input\_prefix\_list\_ids) | The ID of the prefix list. | `list(string)` | `[]` | no |
+| <a name="input_repository"></a> [repository](#input\_repository) | Terraform current module repo | `string` | `"https://github.com/cypik/terraform-aws-security_group"` | no |
+| <a name="input_sg_description"></a> [sg\_description](#input\_sg\_description) | Security group description. Defaults to Managed by Terraform. Cannot be empty string. NOTE: This field maps to the AWS GroupDescription attribute, for which there is no Update API. If you'd like to classify your security groups in a way that can be updated, use tags. | `string` | `null` | no |
+| <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC that the instance security group belongs to. | `string` | `""` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_prefix_list_id"></a> [prefix\_list\_id](#output\_prefix\_list\_id) | The ID of the prefix list. |
+| <a name="output_security_group_arn"></a> [security\_group\_arn](#output\_security\_group\_arn) | IDs on the AWS Security Groups associated with the instance. |
+| <a name="output_security_group_id"></a> [security\_group\_id](#output\_security\_group\_id) | IDs on the AWS Security Groups associated with the instance. |
+| <a name="output_security_group_tags"></a> [security\_group\_tags](#output\_security\_group\_tags) | A mapping of public tags to assign to the resource. |
+<!-- END_TF_DOCS -->
