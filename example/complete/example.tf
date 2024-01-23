@@ -11,7 +11,8 @@ locals {
 ## VPC Module Call.
 ##-----------------------------------------------------------------------------
 module "vpc" {
-  source      = "git::https://github.com/cypik/terraform-aws-vpc.git?ref=v1.0.0"
+  source      = "cypik/vpc/aws"
+  version     = "1.0.1"
   name        = "appdd"
   environment = "test"
   cidr_block  = "10.0.0.0/16"
