@@ -1,6 +1,6 @@
 # Terraform-aws-security-group
 
-# Terraform AWS Cloud SECURITY-GROUP Module
+# TERRAFORM AWS CLOUD SECURITY-GROUP MODULE
 
 ## Table of Contents
 - [Introduction](#introduction)
