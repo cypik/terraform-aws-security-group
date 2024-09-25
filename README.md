@@ -23,7 +23,7 @@ To use this module, you can include it in your Terraform configuration. Here's a
 ```hcl
 module "security_group" {
   source      = "cypik/security-group/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -47,26 +47,6 @@ module "security_group" {
       description = "Allow MongoDB traffic."
     }
   ]
-
-  ## EGRESS Rules
-  new_sg_egress_rules_with_cidr_blocks = [
-    {
-      rule_count  = 1
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["172.16.0.0/16"]
-      description = "Allow ssh outbound traffic."
-    },
-    {
-      rule_count  = 2
-      from_port   = 27017
-      to_port     = 27017
-      protocol    = "tcp"
-      cidr_blocks = ["172.16.0.0/16"]
-      description = "Allow MongoDB outbound traffic."
-    }
-  ]
 }
 ```
 
@@ -74,7 +54,7 @@ module "security_group" {
 ```hcl
 module "security_group" {
   source      = "cypik/security-group/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -87,7 +67,7 @@ module "security_group" {
     protocol    = "tcp"
     cidr_blocks = ["172.16.0.0/16"]
     description = "Allow ssh traffic."
-    },
+  },
     {
       rule_count  = 2
       from_port   = 27017
@@ -104,83 +84,16 @@ module "security_group" {
     to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh traffic."
-    },
+  },
     {
       rule_count  = 2
-      from_port   = 27017
-      to_port     = 22
+      from_port   = 443
+      to_port     = 443
       protocol    = "tcp"
-      description = "Allow Mongodb traffic."
+      description = "Allow Mongodbn traffic."
     }
   ]
-
-  new_sg_ingress_rules_with_source_sg_id = [{
-    rule_count               = 1
-    from_port                = 22
-    to_port                  = 22
-    protocol                 = "tcp"
-    source_security_group_id = "sg-03de2036c5096cb34"
-    description              = "Allow ssh traffic."
-    },
-    {
-      rule_count               = 2
-      from_port                = 27017
-      to_port                  = 27017
-      protocol                 = "tcp"
-      source_security_group_id = "sg-03de2036c5096cb34"
-      description              = "Allow Mongodb traffic."
-  }]
-
-  ## EGRESS Rules
-  new_sg_egress_rules_with_cidr_blocks = [{
-    rule_count  = 1
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = [module.vpc.vpc_cidr_block, "172.16.0.0/16"]
-    description = "Allow ssh outbound traffic."
-    },
-    {
-      rule_count  = 2
-      from_port   = 27017
-      to_port     = 27017
-      protocol    = "tcp"
-      cidr_blocks = ["172.16.0.0/16"]
-      description = "Allow Mongodb outbound traffic."
-    }
-  ]
-
-  new_sg_egress_rules_with_self = [{
-    rule_count  = 1
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    description = "Allow ssh outbound traffic."
-    },
-    {
-      rule_count  = 2
-      from_port   = 27017
-      to_port     = 27017
-      protocol    = "tcp"
-      description = "Allow Mongodb traffic."
-  }]
-
-  new_sg_egress_rules_with_source_sg_id = [{
-    rule_count               = 1
-    from_port                = 22
-    to_port                  = 22
-    protocol                 = "tcp"
-    source_security_group_id = "sg-03de2036c5096cb34"
-    description              = "Allow ssh outbound traffic."
-    },
-    {
-      rule_count               = 2
-      from_port                = 27017
-      to_port                  = 27017
-      protocol                 = "tcp"
-      source_security_group_id = "sg-03de2036c5096cb34"
-      description              = "Allow Mongodb traffic."
-  }]
+}
 }
 ```
 
@@ -189,12 +102,12 @@ module "security_group" {
 ```hcl
 module "security_group_rules" {
   source         = "cypik/security-group/aws"
-  version        = "1.0.1"
+  version        = "1.0.2"
   name           = local.name
   environment    = local.environment
   vpc_id         = module.vpc.vpc_id
   new_sg         = false
-  existing_sg_id = "sg-0c6f081b520533c20"
+  existing_sg_id = "sg-0092e77f40ba8e3ee"
 
   ## INGRESS Rules
   existing_sg_ingress_rules_with_cidr_blocks = [{
@@ -204,7 +117,7 @@ module "security_group_rules" {
     protocol    = "tcp"
     cidr_blocks = ["10.9.0.0/16"]
     description = "Allow ssh traffic."
-    },
+  },
     {
       rule_count  = 2
       from_port   = 27017
@@ -223,7 +136,7 @@ module "security_group_rules" {
     protocol    = "tcp"
     cidr_blocks = ["10.9.0.0/16"]
     description = "Allow ssh outbound traffic."
-    },
+  },
     {
       rule_count  = 2
       from_port   = 27017
@@ -231,7 +144,7 @@ module "security_group_rules" {
       protocol    = "tcp"
       cidr_blocks = ["10.9.0.0/16"]
       description = "Allow Mongodb outbound traffic."
-  }]
+    }]
 }
 ```
 
@@ -240,7 +153,7 @@ module "security_group_rules" {
 ```hcl
 module "security_group" {
   source              = "cypik/security-group/aws"
-  version             = "1.0.1"
+  version             = "1.0.2"
   name                = local.name
   environment         = local.environment
   vpc_id              = module.vpc.vpc_id
@@ -252,7 +165,7 @@ module "security_group" {
   ## INGRESS Rules
   new_sg_ingress_rules_with_prefix_list = [{
     rule_count  = 1
-    allow_port  = 22
+    from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     description = "Allow ssh traffic."
@@ -261,7 +174,8 @@ module "security_group" {
   ## EGRESS Rules
   new_sg_egress_rules_with_prefix_list = [{
     rule_count  = 1
-    allow_port  = 3306
+    from_port   = 3306
+    to_port     = 3306
     protocol    = "tcp"
     description = "Allow mysql/aurora outbound traffic."
   }]
@@ -325,7 +239,6 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_additional_tags"></a> [additional\_tags](#input\_additional\_tags) | Additional tags to assign to the resource. | `map(string)` | `{}` | no |
 | <a name="input_create_timeout"></a> [create\_timeout](#input\_create\_timeout) | Timeout for creating the security group | `string` | `"10m"` | no |
 | <a name="input_delete_timeout"></a> [delete\_timeout](#input\_delete\_timeout) | Timeout for deleting the security group | `string` | `"10m"` | no |
 | <a name="input_enabled"></a> [enabled](#input\_enabled) | Flag to control module creation. | `bool` | `true` | no |
@@ -357,7 +270,6 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 | <a name="input_prefix_list_enabled"></a> [prefix\_list\_enabled](#input\_prefix\_list\_enabled) | Enable prefix\_list. | `bool` | `false` | no |
 | <a name="input_prefix_list_ids"></a> [prefix\_list\_ids](#input\_prefix\_list\_ids) | The ID of the prefix list. | `list(string)` | `[]` | no |
 | <a name="input_repository"></a> [repository](#input\_repository) | Terraform current module repo | `string` | `"https://github.com/cypik/terraform-aws-security_group"` | no |
-| <a name="input_revoke_rules_on_delete"></a> [revoke\_rules\_on\_delete](#input\_revoke\_rules\_on\_delete) | Whether to revoke all rules before deleting the security group | `bool` | `false` | no |
 | <a name="input_sg_description"></a> [sg\_description](#input\_sg\_description) | Security group description. Defaults to Managed by Terraform. Cannot be empty string. NOTE: This field maps to the AWS GroupDescription attribute, for which there is no Update API. If you'd like to classify your security groups in a way that can be updated, use tags. | `string` | `null` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Additional tags to apply to the security group | `map(string)` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | The ID of the VPC that the instance security group belongs to. | `string` | `""` | no |
