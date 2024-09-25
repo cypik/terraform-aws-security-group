@@ -24,8 +24,8 @@ variable "repository" {
 
 variable "managedby" {
   type        = string
-  default     = "cypik"
-  description = "ManagedBy, eg 'cypik'."
+  default     = "info@cypik.com"
+  description = "ManagedBy, eg 'info@cypik.com'"
 }
 
 variable "vpc_id" {
@@ -57,6 +57,12 @@ variable "entry" {
   type        = list(any)
   default     = []
   description = "Can be specified multiple times for each prefix list entry."
+}
+
+variable "additional_tags" {
+  description = "Additional tags to assign to the resource."
+  type        = map(string)
+  default     = {}
 }
 
 variable "existing_sg_id" {
@@ -95,6 +101,38 @@ variable "existing_sg_ingress_rules_with_cidr_blocks" {
   description = "Ingress rules with only cidr blocks. Should be used when there is existing security group."
 }
 
+
+#
+#variable "existing_sg_ingress_rules_with_cidr_blocks" {
+#  type = list(object({
+#    rule_count  = number
+#    from_port   = number
+#    to_port     = number
+#    protocol    = string
+#    cidr_blocks = list(string) # List of CIDR blocks
+#    description = string
+#  }))
+#
+#  default = [
+#    {
+#      rule_count  = 1
+#      from_port   = 22
+#      to_port     = 22
+#      protocol    = "tcp"
+#      cidr_blocks = ["10.9.0.0/16"]
+#      description = "Allow ssh traffic."
+#    },
+#    {
+#      rule_count  = 2
+#      from_port   = 27017
+#      to_port     = 27017
+#      protocol    = "tcp"
+#      cidr_blocks = ["10.9.0.0/16"]
+#      description = "Allow Mongodb traffic."
+#    }
+#  ]
+#}
+
 variable "existing_sg_ingress_rules_with_self" {
   type        = any
   default     = {}
@@ -114,9 +152,25 @@ variable "existing_sg_ingress_rules_with_prefix_list" {
 }
 
 variable "new_sg_egress_rules_with_cidr_blocks" {
-  type        = any
-  default     = {}
-  description = "Egress rules with only cidr_blockd. Should be used when new security group is been deployed."
+  type = list(object({
+    rule_count       = number
+    from_port        = number
+    to_port          = number
+    protocol         = string
+    cidr_blocks      = optional(list(string))
+    ipv6_cidr_blocks = optional(list(string))
+    description      = string
+  }))
+
+  default = [{
+    rule_count       = 1
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"          # Allows all protocols
+    cidr_blocks      = ["0.0.0.0/0"] # Allows all outbound traffic for IPv4
+    ipv6_cidr_blocks = ["::/0"]      # Allows all outbound traffic for IPv6
+    description      = "Allow all outbound traffic."
+  }]
 }
 
 variable "new_sg_egress_rules_with_self" {
@@ -173,7 +227,7 @@ variable "sg_description" {
   description = "Security group description. Defaults to Managed by Terraform. Cannot be empty string. NOTE: This field maps to the AWS GroupDescription attribute, for which there is no Update API. If you'd like to classify your security groups in a way that can be updated, use tags."
 }
 
-variable "enable" {
+variable "enabled" {
   type        = bool
   default     = true
   description = "Flag to control module creation."
@@ -183,4 +237,28 @@ variable "prefix_list_address_family" {
   type        = string
   default     = "IPv4"
   description = "(Required, Forces new resource) The address family (IPv4 or IPv6) of prefix list."
+}
+
+variable "revoke_rules_on_delete" {
+  description = "Whether to revoke all rules before deleting the security group"
+  type        = bool
+  default     = false # Set default to false to maintain backward compatibility
+}
+
+variable "tags" {
+  description = "Additional tags to apply to the security group"
+  type        = map(string)
+  default     = {}
+}
+
+variable "create_timeout" {
+  description = "Timeout for creating the security group"
+  type        = string
+  default     = "10m"
+}
+
+variable "delete_timeout" {
+  description = "Timeout for deleting the security group"
+  type        = string
+  default     = "10m"
 }

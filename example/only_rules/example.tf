@@ -12,7 +12,7 @@ locals {
 ##-----------------------------------------------------------------------------
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = "app11"
   environment = "test"
   cidr_block  = "10.0.0.0/16"
@@ -22,12 +22,12 @@ module "vpc" {
 ## Security Group Rules Module Call.
 ##-----------------------------------------------------------------------------
 module "security_group_rules" {
-  source         = "./../../."
+  source         = "./../../"
   name           = local.name
   environment    = local.environment
-  vpc_id         = module.vpc.id
+  vpc_id         = module.vpc.vpc_id
   new_sg         = false
-  existing_sg_id = "sg-0474592052307dbb2"
+  existing_sg_id = "sg-0092e77f40ba8e3ee"
 
   ## INGRESS Rules
   existing_sg_ingress_rules_with_cidr_blocks = [{

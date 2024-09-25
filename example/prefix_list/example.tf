@@ -12,7 +12,7 @@ locals {
 ##-----------------------------------------------------------------------------
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.1"
+  version     = "1.0.2"
   name        = local.name
   environment = local.environment
   cidr_block  = "10.0.0.0/16"
@@ -22,10 +22,10 @@ module "vpc" {
 ## Security Group Module Call.
 ##-----------------------------------------------------------------------------
 module "security_group" {
-  source              = "./../.././"
+  source              = "./../../"
   name                = local.name
   environment         = local.environment
-  vpc_id              = module.vpc.id
+  vpc_id              = module.vpc.vpc_id
   prefix_list_enabled = true
   entry = [{
     cidr = "10.19.0.0/16"
