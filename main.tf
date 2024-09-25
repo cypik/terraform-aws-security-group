@@ -175,7 +175,7 @@ resource "aws_security_group_rule" "existing_sg_ingress_with_prefix_list" {
 resource "aws_security_group_rule" "new_sg_egress_with_cidr_blocks" {
   for_each          = var.enabled && var.existing_sg_id == null ? { for rule in var.new_sg_egress_rules_with_cidr_blocks : rule.rule_count => rule } : {}
   type              = "egress"
-  from_port               = each.value.from_port
+  from_port         = each.value.from_port
   protocol          = try(each.value.protocol, "tcp")
   to_port           = each.value.to_port
   security_group_id = join("", aws_security_group.default[*].id)
