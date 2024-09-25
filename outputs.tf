@@ -32,19 +32,7 @@ output "existing_security_group" {
   value = data.aws_security_group.existing
 }
 
-
 output "existing_sg" {
   value       = data.aws_security_group.existing
   description = "This outputs the existing security group ID to verify it is correct."
 }
-
-#output "prefix_list_tags_all" {
-#  value       = aws_ec2_managed_prefix_list.prefix_list[*].tags_all
-#  description = "A map of all tags assigned to the prefix list, including inherited tags."
-#
-#}
-#
-#output "prefix_list_version" {
-#  description = "The latest version of the prefix list."
-#  value       = aws_ec2_managed_prefix_list.prefix_list[*].version
-#}

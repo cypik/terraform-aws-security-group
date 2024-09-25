@@ -59,12 +59,6 @@ variable "entry" {
   description = "Can be specified multiple times for each prefix list entry."
 }
 
-variable "additional_tags" {
-  description = "Additional tags to assign to the resource."
-  type        = map(string)
-  default     = {}
-}
-
 variable "existing_sg_id" {
   type        = string
   default     = null
@@ -100,38 +94,6 @@ variable "existing_sg_ingress_rules_with_cidr_blocks" {
   default     = {}
   description = "Ingress rules with only cidr blocks. Should be used when there is existing security group."
 }
-
-
-#
-#variable "existing_sg_ingress_rules_with_cidr_blocks" {
-#  type = list(object({
-#    rule_count  = number
-#    from_port   = number
-#    to_port     = number
-#    protocol    = string
-#    cidr_blocks = list(string) # List of CIDR blocks
-#    description = string
-#  }))
-#
-#  default = [
-#    {
-#      rule_count  = 1
-#      from_port   = 22
-#      to_port     = 22
-#      protocol    = "tcp"
-#      cidr_blocks = ["10.9.0.0/16"]
-#      description = "Allow ssh traffic."
-#    },
-#    {
-#      rule_count  = 2
-#      from_port   = 27017
-#      to_port     = 27017
-#      protocol    = "tcp"
-#      cidr_blocks = ["10.9.0.0/16"]
-#      description = "Allow Mongodb traffic."
-#    }
-#  ]
-#}
 
 variable "existing_sg_ingress_rules_with_self" {
   type        = any
@@ -237,12 +199,6 @@ variable "prefix_list_address_family" {
   type        = string
   default     = "IPv4"
   description = "(Required, Forces new resource) The address family (IPv4 or IPv6) of prefix list."
-}
-
-variable "revoke_rules_on_delete" {
-  description = "Whether to revoke all rules before deleting the security group"
-  type        = bool
-  default     = false # Set default to false to maintain backward compatibility
 }
 
 variable "tags" {
