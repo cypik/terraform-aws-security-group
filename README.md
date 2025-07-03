@@ -23,7 +23,7 @@ To use this module, you can include it in your Terraform configuration. Here's a
 ```hcl
 module "security_group" {
   source      = "cypik/security-group/aws"
-  version     = "1.0.2"
+  version     = "1.0.3"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -54,7 +54,7 @@ module "security_group" {
 ```hcl
 module "security_group" {
   source      = "cypik/security-group/aws"
-  version     = "1.0.2"
+  version     = "1.0.3"
   name        = local.name
   environment = local.environment
   vpc_id      = module.vpc.vpc_id
@@ -93,7 +93,6 @@ module "security_group" {
       description = "Allow Mongodbn traffic."
     }
   ]
-}
 }
 ```
 
@@ -196,14 +195,14 @@ This project is licensed under the **MIT** License - see the [LICENSE](https://g
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.5 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=5.67.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.12.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=5.82.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >=5.67.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >=5.82.2 |
 
 ## Modules
 
