@@ -12,7 +12,7 @@ locals {
 ##-----------------------------------------------------------------------------
 module "vpc" {
   source      = "cypik/vpc/aws"
-  version     = "1.0.3"
+  version     = "1.0.5"
   name        = "app"
   environment = "test"
   cidr_block  = "10.0.0.0/16"
